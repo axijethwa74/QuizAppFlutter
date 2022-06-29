@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:quizapp/view/result.dart';
 // ignore: unused_import
-import './question.dart';
-// ignore: unused_import
-import 'answers.dart';
+import './quiz.dart';
+import "./result.dart";
 
 
 // ignore: must_be_immutable
 class LayoutApp extends StatefulWidget {
 
 
- const LayoutApp({Key? key}) : super(key: key);
+ const LayoutApp({key}) : super(key: key);
 
   @override
   State<LayoutApp> createState() => _LayoutAppState();
@@ -17,14 +17,85 @@ class LayoutApp extends StatefulWidget {
 
 class _LayoutAppState extends State<LayoutApp> {
 
+ final _question = const [
+      {
+        'questionText':'what\' s your fav color ?',
+        'answersText':[
+
+        {'text': 'Black', 'score' : 10 },
+        {'text': 'red',    'score' : 5 },
+        {'text': 'green', 'score' : 4 },
+        {'text': 'white', 'score' : 3 },
+        
+        ],
+
+      },
+       {
+        'questionText':'what\' s your fav Animal ?',
+        'answersText':[
+
+        {'text': 'rabit', 'score' : 3 },
+        {'text': 'elephant', 'score' : 3 },
+        {'text': 'Snake', 'score' : 3 },
+        {'text': 'lion', 'score' : 3 },
+        
+        ],
+      },
+       {
+        'questionText':'what\' s your fav food ?',
+          'answersText':[
+
+        {'text': 'thai', 'score' : 2 },
+        {'text': 'chinees', 'score' :2 },
+        {'text': 'Desi', 'score' : 2 },
+        {'text': 'sweet', 'score' : 2 },
+        
+        ],
+
+      },
+       {
+        'questionText':'what\' s your fav brand shoes ?',
+           'answersText':[
+
+        {'text': 'Adidas', 'score' : 1 },
+        {'text': 'Gucci', 'score' :  1},
+        {'text': 'Nike', 'score' : 1 },
+        {'text': 'Nick', 'score' : 1 },
+        
+        ],
+      },
+      
+    ];
   
-  var questionindex=0;
+  var _questionindex=0;
 
+  var totalscore = 0;
 
-  void answersQuestion(){
+  // ignore: unused_element
+  void _resetQuiz(){
 
     setState(() {
-       questionindex =questionindex +1;
+      _questionindex=0;
+      totalscore = 0;
+    });
+  }
+
+
+  void _answersQuestion(int score){
+
+    totalscore += score;  
+
+    setState(() {
+       _questionindex =_questionindex +1;
+
+       if(_questionindex < _question.length){
+        // ignore: avoid_print
+        print('We have a more question');
+       }
+       else{
+        // ignore: avoid_print
+        print('I have no more question');
+       }
     });
   
   // print(questionindex); 
@@ -34,29 +105,7 @@ class _LayoutAppState extends State<LayoutApp> {
   @override
   Widget build(BuildContext context) {
    
-    var question = [
-      {
-        'questionText':'what\' s your fav color ?',
-        'answersText':['red','green','yellow','blue'],
-
-      },
-       {
-        'questionText':'what\' s your fav Animal ?',
-        'answersText':['rabit','snake','elephants','lion'],
-
-      },
-       {
-        'questionText':'what\' s your fav food ?',
-        'answersText':['Desi','thai','chinees','veg'],
-
-      },
-       {
-        'questionText':'what\' s your fav brand shoes ?',
-        'answersText':['nike','Addidas','Gucci','urban nick'],
-
-      },
-      
-    ];
+  
 
     return MaterialApp(
        debugShowCheckedModeBanner: false,
@@ -65,23 +114,15 @@ class _LayoutAppState extends State<LayoutApp> {
           centerTitle: true,
           title: const Text("Quiz App"),
         ),
-        body: Center(
-          child: Column(
-            children:  [
-               Questions(
-                 question[questionindex]['questionText'].toString(),
-               ),
-
-             ...  (question[questionindex]['answersText'] as List<String>).map((Answer){
-                return Answers(answersQuestion, Answer); 
-
-               }).toList()
-            ],
-
-          ),
+        body: (_questionindex < _question.length ? 
+         Quiz(
+          answersQuestion: _answersQuestion,
+          questionindex: _questionindex,
+          question: _question,
+        )
+        :   Result(totalscore,_resetQuiz)
         ),
-        ),
-
+      )
 
 
     );

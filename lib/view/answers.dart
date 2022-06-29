@@ -1,16 +1,13 @@
-// ignore: unused_import
-import 'dart:ffi';
-
 
 // ignore: unused_import
 import 'package:flutter/material.dart';
 class Answers extends StatelessWidget {
  
- final Function() handler;
+ final Function handler;
  final String answersText;
 
-  // ignore: use_key_in_widget_constructors
-   const Answers(this.handler,this.answersText);
+  // ignore: use_key_in_widget_constructors, prefer_const_constructors_in_immutables
+    Answers(this.handler,this.answersText);
 
   @override
   Widget build(BuildContext context) {
